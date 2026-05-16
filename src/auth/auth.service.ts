@@ -9,7 +9,7 @@ export class AuthService {
     const user = await prisma.user.create({
       data: {
         email,
-        password: hash,
+        passwordHash: hash, // ✅ FIXED
       },
     });
 
@@ -23,7 +23,7 @@ export class AuthService {
 
     if (!user) return null;
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.passwordHash); // ✅ FIXED
     if (!match) return null;
 
     return user;
