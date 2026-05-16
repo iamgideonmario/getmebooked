@@ -18,8 +18,9 @@ export class BusinessController {
     return this.businessService.createBusiness(user.id, body.name);
   }
 
-  @Get()
-  async all() {
-    return this.businessService.getAll();
-  }
+ @Get()
+async all(@Res() res) {
+  const businesses = await this.businessService.getAll();
+
+  return res.render('booking/business', { businesses });
 }

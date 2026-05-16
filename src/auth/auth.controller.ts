@@ -1,7 +1,18 @@
 import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
+import { Res } from '@nestjs/common';
+import { Response } from 'express';
 
+@Get('login')
+loginPage(@Res() res: Response) {
+  return res.render('auth/login');
+}
+
+@Get('register')
+registerPage(@Res() res: Response) {
+  return res.render('auth/register');
+}
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -16,9 +27,16 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() body: { email: string; password: string }, @Req() req: Request) {
-    const user = await this.authService.validateUser(body.email, body.password);
+async login(@Body() body, @Req() req, @Res() res) {
+  const user = await this.authService.validateUser(body.email, body.password);
 
+  if (!user) {
+    return res.send("Invalid credentials");
+  }
+
+  req.session.user = user;
+  return res.redirect('/dashboard');
+}
     if (!user) {
       return { error: 'Invalid credentials' };
     }
@@ -33,4 +51,12 @@ export class AuthController {
     (req as any).session.destroy(() => {});
     return { message: 'Logged out' };
   }
+}
+
+@UseGuards(AuthGuard)
+@Get('dashboard')
+dashboard(@Req() req, @Res() res) {
+  return res.render('dashboard/index', {
+    user: req.session.user,
+  });
 }
