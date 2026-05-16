@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   home() {
-    return "Public route ✅";
+    return "✅ GetMeBooked running";
   }
 
   @UseGuards(AuthGuard)
@@ -18,5 +18,5 @@ export class AppController {
       user: (req as any).session.user,
     };
   }
+
 }
-``

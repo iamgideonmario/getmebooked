@@ -1,6 +1,10 @@
 import {
   Controller,
-  Postards,  Post,
+  Post,
+  Body,
+  Get,
+  Req,
+  UseGuards,
   Res,
 } from '@nestjs/common';
 
@@ -27,9 +31,9 @@ export class BusinessController {
   @Get()
   async all(@Res() res: Response) {
     const businesses = await this.businessService.getAll();
-    return res.render('booking/business', { businesses });
+
+    return res.render('booking/business', {
+      businesses,
+    });
   }
 }
-  Body,
-  Get,
-  Req,
