@@ -1,7 +1,0 @@
-id (pk)
-email UNIQUE
-password_hash
-role
-timezone
-is_email_verified
-created_at

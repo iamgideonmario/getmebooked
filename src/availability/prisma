@@ -1,8 +1,0 @@
-model Availability {
-  id         String   @id @default(uuid())
-  businessId String
-  staffId    String?  // null = applies to whole business
-  dayOfWeek  Int      // 0 = Sunday, 6 = Saturday
-  startTime  String   // "09:00"
-  endTime    String   // "17:00"
-}
