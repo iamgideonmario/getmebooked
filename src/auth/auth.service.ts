@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt.js';
+import * as bcrypt from 'bcryptjs';
 import { prisma } from '../prisma/prisma.service';
 
 export class AuthService {
