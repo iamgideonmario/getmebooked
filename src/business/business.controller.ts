@@ -1,3 +1,15 @@
+import { Res } from '@nestjs/common';
+import { Response } from 'express';
+import { prisma } from '../prisma/prisma.service';
+@Get()
+async bookingPage(@Res() res: Response) {
+  const services = await prisma.service.findMany();
+
+  return res.render('booking/index', {
+    services,
+  });
+}
+
 import {
   Controller,
   Post,
