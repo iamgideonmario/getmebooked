@@ -10,9 +10,7 @@ import {
 
 import { BusinessService } from './business.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
-
 import { Request, Response } from 'express';
-import { Response } from 'express';
 import { prisma } from '../prisma/prisma.service';
 @Controller('business')
 export class BusinessController {
