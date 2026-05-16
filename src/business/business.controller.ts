@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, Req, UseGuards, Res } from '@nestjs/common';import { Controller, Post, Body, Get, Req, UseGuards { AuthGuard } from '../auth/guards/auth.guard';
+import {
+  Controller,
+  Postards,  Post,
+  Res,
+} from '@nestjs/common';
+
+import { BusinessService } from './business.service';
+import { AuthGuard } from '../auth/guards/auth.guard';
+
 import { Request, Response } from 'express';
 
 @Controller('business')
@@ -9,7 +17,7 @@ export class BusinessController {
   @Post('create')
   async create(
     @Body() body: { name: string },
-    @Req() req: Request
+    @Req() req: Request,
   ) {
     const user = (req as any).session.user;
 
@@ -22,4 +30,6 @@ export class BusinessController {
     return res.render('booking/business', { businesses });
   }
 }
-import { BusinessService } from './business.service';
+  Body,
+  Get,
+  Req,
