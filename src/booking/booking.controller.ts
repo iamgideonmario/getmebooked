@@ -1,42 +1,38 @@
 import {
-  Controller,
-  Post,
-  Body,
-  Req,
-  Get,
-  Param,
-  UseGuards,
+ Guards,  Controller,
+  Res,
 } from '@nestjs/common';
-import { BookingService } from './booking.service';
-import { AuthGuard } from '../auth/guards/auth.guard';
-import { Request } from 'express';
 
-@Controller('booking')
-export class BookingController {
-  constructor(private bookingService: BookingService) {}
+import { BusinessService } from './business.service';
+import { AuthGuard } from '../auth/guards/auth.guard';
+
+import { Request, Response } from 'express';
+
+@Controller('business')
+export class BusinessController {
+  constructor(private businessService: BusinessService) {}
 
   @UseGuards(AuthGuard)
   @Post('create')
   async create(
-    @Body() body: { serviceId: string; startTime: string },
+    @Body() body: { name: string },
     @Req() req: Request,
   ) {
     const user = (req as any).session.user;
 
-    return this.bookingService.createBooking(
-      user.id,
-      body.serviceId,
-      new Date(body.startTime),
-    );
+    return this.businessService.createBusiness(user.id, body.name);
   }
 
-  @Get(':serviceId')
-  async get(@Param('serviceId') serviceId: string) {
-    return this.bookingService.getBookings(serviceId);
-  }
+  @Get()
+  async all(@Res() res: Response) {
+    const businesses = await this.businessService.getAll();
 
-  @Get('availability/:serviceId')
-  async availability(@Param('serviceId') serviceId: string) {
-    return this.bookingService.getAvailability(serviceId, new Date());
+    return res.render('booking/business', {
+      businesses,
+    });
   }
 }
+  Post,
+  Body,
+  Get,
+  Req,
