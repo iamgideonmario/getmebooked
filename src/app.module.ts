@@ -6,6 +6,14 @@ import { BusinessController } from './business/business.controller';
 import { BusinessService } from './business/business.service';
 
 @Module({
-  controllers: [AppController, AuthController, BusinessController],
-  providers: [AuthService, BusinessService],
+  controllers: [
+    AppController,
+    AuthController,
+    BusinessController
+  ],
+  providers: [
+    AuthService,
+    BusinessService
+  ],
 })
+export class AppModule {}
