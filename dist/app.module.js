@@ -11,12 +11,21 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const auth_controller_1 = require("./auth/auth.controller");
 const auth_service_1 = require("./auth/auth.service");
+const business_controller_1 = require("./business/business.controller");
+const business_service_1 = require("./business/business.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService],
+        controllers: [
+            app_controller_1.AppController,
+            auth_controller_1.AuthController,
+            business_controller_1.BusinessController
+        ],
+        providers: [
+            auth_service_1.AuthService,
+            business_service_1.BusinessService
+        ],
     })
 ], AppModule);
