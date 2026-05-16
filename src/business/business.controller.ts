@@ -20,6 +20,6 @@ export class BusinessController {
 
   @Get()
   async all() {
-    return this.businessService.getAll();
+    return this.businessService.createBusiness(user.id, body.name, body.city);
   }
 }
