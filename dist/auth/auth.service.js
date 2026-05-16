@@ -35,22 +35,22 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const bcrypt = __importStar(require("bcrypt"));
+const prisma_service_1 = require("../prisma/prisma.service");
 class AuthService {
-    constructor() {
-        this.users = [];
-    }
     async register(email, password) {
         const hash = await bcrypt.hash(password, 10);
-        const user = {
-            id: Date.now().toString(),
-            email,
-            password: hash,
-        };
-        this.users.push(user);
+        const user = await prisma_service_1.prisma.user.create({
+            data: {
+                email,
+                password: hash,
+            },
+        });
         return user;
     }
     async validateUser(email, password) {
-        const user = this.users.find(u => u.email === email);
+        const user = await prisma_service_1.prisma.user.findUnique({
+            where: { email },
+        });
         if (!user)
             return null;
         const match = await bcrypt.compare(password, user.password);
