@@ -1,0 +1,14 @@
+model Staff {
+  id         String @id @default(uuid())
+  businessId String
+  userId     String
+  role       String
+}
+
+model StaffInvite {
+  id         String @id @default(uuid())
+  email      String
+  businessId String
+  token      String @unique
+  expiresAt  DateTime
+}

@@ -1,0 +1,11 @@
+<h1>Book a Service</h1>
+
+<ul>
+  <% businesses.forEach(b => { %>
+    <li>
+      <a href="/business/<%= b.slug %>">
+        <%= b.name %> – <%= b.city %>, <%= b.country %>
+      </a>
+    </li>
+  <% }) %>
+</ul>

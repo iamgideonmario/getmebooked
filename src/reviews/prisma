@@ -1,0 +1,8 @@
+model Review {
+  id         String   @id @default(uuid())
+  bookingId  String   @unique
+  businessId String
+  rating     Int
+  comment    String
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,52 @@
+<h1 class="text-xl font-bold mb-4">
+  Book <%= business.name %>
+</h1>
+
+<form method="POST" class="bg-white p-6 shadow rounded max-w-lg">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <div class="mb-4">
+    <label class="block mb-1">Service</label>
+    <select name="serviceId" class="w-full border px-3 py-2 rounded">
+      <% services.forEach(s => { %>
+        <option value="<%= s.id %>">
+          <%= s.name %> – <%= s.duration %> mins
+        </option>
+      <% }) %>
+    </select>
+  </div>
+
+  <div class="mb-4">
+    <label class="block mb-1">Date</label>
+    <input type="date" name="date" class="border px-3 py-2 w-full">
+  </div>
+
+  <div class="mb-4">
+    <label class="block mb-1">Time</label>
+    <input type="time" name="time" class="border px-3 py-2 w-full">
+  </div>
+
+  <button class="bg-blue-600 text-white px-4 py-2 rounded">
+    Request Booking
+  </button>
+</form>
+<script>
+  const dateInput = document.querySelector('[name="date"]');
+  const timeInput = document.querySelector('[name="time"]');
+  const status = document.createElement('p');
+  dateInput.after(status);
+
+  async function checkAvailability() {
+    if (!dateInput.value || !timeInput.value) return;
+
+    const res = await fetch(
+      `/availability/check?businessId=<%= business.id %>&start=${dateInput.value}T${timeInput.value}`
+    );
+
+    const available = await res.json();
+    status.textContent = available ? '✅ Available' : '❌ Unavailable';
+    status.className = available ? 'text-green-600' : 'text-red-600';
+  }
+
+  dateInput.onchange = timeInput.onchange = checkAvailability;
+</script>

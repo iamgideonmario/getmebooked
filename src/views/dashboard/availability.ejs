@@ -1,0 +1,42 @@
+<h1 class="text-xl font-bold mb-4">Set Availability</h1>
+
+<form method="POST" class="bg-white p-6 shadow rounded max-w-lg">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <div class="mb-4">
+    <label>Day of Week</label>
+    <select name="dayOfWeek" class="w-full border px-3 py-2">
+      <option value="1">Monday</option>
+      <option value="2">Tuesday</option>
+      <option value="3">Wednesday</option>
+      <option value="4">Thursday</option>
+      <option value="5">Friday</option>
+      <option value="6">Saturday</option>
+      <option value="0">Sunday</option>
+    </select>
+  </div>
+
+  <div class="mb-4">
+    <label>Start Time</label>
+    <input type="time" name="startTime" class="border px-3 py-2 w-full">
+  </div>
+
+  <div class="mb-4">
+    <label>End Time</label>
+    <input type="time" name="endTime" class="border px-3 py-2 w-full">
+  </div>
+
+  <button class="bg-green-600 text-white px-4 py-2 rounded">
+    Save Availability
+  </button>
+</form>
+
+<h2 class="mt-6 font-semibold">Current Rules</h2>
+
+<ul class="mt-2">
+  <% availability.forEach(a => { %>
+    <li class="bg-gray-100 p-2 mb-2 rounded">
+      Day <%= a.dayOfWeek %>: <%= a.startTime %> – <%= a.endTime %>
+    </li>
+  <% }) %>
+</ul>
