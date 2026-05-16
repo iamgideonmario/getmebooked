@@ -10,12 +10,12 @@ export class BusinessController {
   @UseGuards(AuthGuard)
   @Post('create')
   async create(
-    @Body() body: { name: string },
+    @Body() body: { name: string; city: string },
     @Req() req: Request
   ) {
     const user = (req as any).session.user;
 
-    return this.businessService.createBusiness(user.id, body.name);
+    return this.businessService.createBusiness(user.id, body.name, body.city);
   }
 
   @Get()
