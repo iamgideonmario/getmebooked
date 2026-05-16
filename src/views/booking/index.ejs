@@ -1,0 +1,44 @@
+<div class="container mt-4">
+  <h2>Book a Service</h2>
+
+  <form method="POST" action="/booking/create">
+
+    <!-- ✅ Service dropdown -->
+    <select name="serviceId" class="form-control mb-3">
+      <% services.forEach(s => { %>
+        <option value="<%= s.id %>">
+          <%= s.name %> (<%= s.duration %> min)
+        </option>
+      <% }) %>
+    </select>
+
+    <!-- ✅ Date picker -->
+    <input type="date" id="date" class="form-control mb-3" />
+
+    <!-- ✅ Available slots -->
+    <select name="startTime" id="slots" class="form-control mb-3">
+      <option>Select a time</option>
+    </select>
+
+    <button class="btn btn-success">Book</button>
+<script>
+document.getElementById("date").addEventListener("change", async function () {
+  const date = this.value;
+  const serviceId = document.querySelector("select[name='serviceId']").value;
+
+  const res = await fetch(`/booking/availability/${serviceId}`);
+  const data = await res.json();
+
+  const slots = document.getElementById("slots");
+  slots.innerHTML = "";
+
+  data.forEach(slot => {
+    const option = document.createElement("option");
+    option.value = slot;
+    option.text = new Date(slot).toLocaleString();
+    slots.appendChild(option);
+  });
+});
+</script>
+  </form>
+</div>

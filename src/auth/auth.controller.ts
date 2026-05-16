@@ -8,6 +8,11 @@ import { Response } from 'express';
 loginPage(@Res() res: Response) {
   return res.render('auth/login');
 }
+@Get()
+async bookingPage(@Res() res) {
+  const services = await prisma.service.findMany();
+  return res.render('booking/index', { services });
+}
 
 @Get('register')
 registerPage(@Res() res: Response) {
@@ -59,4 +64,10 @@ dashboard(@Req() req, @Res() res) {
   return res.render('dashboard/index', {
     user: req.session.user,
   });
+}
+
+@Get()
+async bookingPage(@Res() res) {
+  const services = await prisma.service.findMany();
+  return res.render('booking/index', { services });
 }

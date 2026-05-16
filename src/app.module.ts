@@ -4,6 +4,8 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { BusinessController } from './business/business.controller';
 import { BusinessService } from './business/business.service';
+import { PaymentController } from './payment/payment.controller';
+import { PaymentService } from './payment/payment.service';
 
 @Module({
   controllers: [
