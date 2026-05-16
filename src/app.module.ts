@@ -9,6 +9,9 @@ import { BusinessService } from './business/business.service';
 import { BookingController } from './booking/booking.controller';
 import { BookingService } from './booking/booking.service';
 
+
+import { PaymentController } from './payment/payment.controller';
+import { PaymentService } from './payment/payment.service';
 @Module({
   controllers: [
     AppController,
@@ -16,6 +19,9 @@ import { BookingService } from './booking/booking.service';
     BusinessController,
     BookingController
   ],
+
+  controllers: [..., PaymentController],controllers: [...,: [..., PaymentService],
+
   providers: [
     AuthService,
     BusinessService,
