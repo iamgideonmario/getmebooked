@@ -1,19 +1,17 @@
+import { prisma } from '../prisma/prisma.service';
+
 export class BusinessService {
-  private businesses = [];
 
-  createBusiness(userId: string, name: string) {
-    const business = {
-      id: Date.now().toString(),
-      name,
-      ownerId: userId,
-    };
-
-    this.businesses.push(business);
-
-    return business;
+  async createBusiness(userId: string, name: string) {
+    return prisma.business.create({
+      data: {
+        name,
+        ownerId: userId,
+      },
+    });
   }
 
-  getAll() {
-    return this.businesses;
+  async getAll() {
+    return prisma.business.findMany();
   }
 }

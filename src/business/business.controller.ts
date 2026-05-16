@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Get, Req, UseGuards } from '@nestjs/common';
 import { BusinessService } from './business.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { Request } from 'express';
 
 @Controller('business')
 export class BusinessController {
@@ -8,14 +9,17 @@ export class BusinessController {
 
   @UseGuards(AuthGuard)
   @Post('create')
-  create(@Body() body, @Req() req) {
+  async create(
+    @Body() body: { name: string },
+    @Req() req: Request
+  ) {
     const user = (req as any).session.user;
 
     return this.businessService.createBusiness(user.id, body.name);
   }
 
   @Get()
-  all() {
+  async all() {
     return this.businessService.getAll();
   }
 }

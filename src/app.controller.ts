@@ -1,6 +1,6 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from './auth/guards/auth.guard';
-import { UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 
 @Controller()
 export class AppController {
@@ -12,11 +12,11 @@ export class AppController {
 
   @UseGuards(AuthGuard)
   @Get('dashboard')
-  dashboard(@Req() req) {
+  dashboard(@Req() req: Request) {
     return {
-      message: "Welcome to dashboard",
+      message: "Dashboard",
       user: (req as any).session.user,
     };
   }
-
 }
+``
