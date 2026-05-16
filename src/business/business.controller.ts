@@ -37,14 +37,5 @@ export class BusinessController {
     return res.render('booking/business', {
       businesses,
     });
-  }
-
-  @Get()
-async bookingPage(@Res() res: Response) {
-  const services = await prisma.service.findMany();
-
-  return res.render('booking/index', {
-    services,
-  });
 }
 }
