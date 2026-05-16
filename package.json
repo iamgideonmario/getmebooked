@@ -17,17 +17,17 @@
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
     "ejs": "^3.1.9",
+    "express-rate-limit": "^7.0.0",
     "express-session": "^1.17.3",
     "helmet": "^7.0.0",
-    "express-rate-limit": "^7.0.0",
     "prisma": "^5.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "ts-node-dev": "^2.0.0",
-    "@types/node": "^20.0.0",
-    "@types/express-session": "^1.17.7",
     "@types/cookie-parser": "^1.4.3",
-    "@types/csurf": "^1.11.2"
+    "@types/csurf": "^1.11.2",
+    "@types/express-session": "^1.17.7",
+    "@types/node": "^20.19.41",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
   }
 }
