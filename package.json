@@ -17,7 +17,7 @@
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
     "@types/node": "^20.19.41",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
     "ejs": "^3.1.9",
