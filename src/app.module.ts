@@ -19,3 +19,19 @@ import { PaymentService } from './payment/payment.service';
   ],
 })
 export class AppModule {}
+
+controllers: [
+  AppController,
+  AuthController,
+  BusinessController,
+  ServiceController,
+  BookingController,
+  PaymentController   // ✅ ADD THIS
+],
+providers: [
+  AuthService,
+  BusinessService,
+  ServiceService,
+  BookingService,
+  PaymentService      // ✅ ADD THIS
+],
