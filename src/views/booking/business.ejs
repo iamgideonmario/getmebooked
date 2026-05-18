@@ -1,7 +1,31 @@
-<h1>Businesses</h1>
+<%- include('../partials/header', { title: 'Businesses', user }) %>
 
-<ul>
-  <% businesses.forEach(b => { %>
-    <li><%= b.name %></li>
-  <% }) %>
-</ul>
+<div class="business-page">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3">Businesses</h1>
+      <p class="text-muted mb-0">Choose a partner and book the service you need.</p>
+    </div>
+    <% if (user) { %>
+      <a class="btn btn-secondary" href="/dashboard">My Dashboard</a>
+    <% } else { %>
+      <a class="btn btn-primary" href="/auth/login">Sign In</a>
+    <% } %>
+  </div>
+
+  <div class="row g-3">
+    <% businesses.forEach(b => { %>
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title"><%= b.name %></h5>
+            <p class="card-text text-muted">Location: <%= b.city || 'Unknown' %></p>
+            <a href="/booking/new/<%= b.id %>" class="mt-auto btn btn-primary">Book now</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

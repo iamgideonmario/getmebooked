@@ -1,8 +1,7 @@
 import { prisma } from '../prisma/prisma.service';
 
 export class BookingService {
-
-  async createBooking(userId: string, serviceId: string, startTime: Date) {
+  async createBooking(userId: string, serviceId: string, startTime: Date, staffId?: string) {
     const service = await prisma.service.findUnique({
       where: { id: serviceId },
     });
@@ -11,25 +10,40 @@ export class BookingService {
 
     const endTime = new Date(startTime.getTime() + service.duration * 60000);
 
-    const conflict = await prisma.booking.findFirst({
-      where: {
-        serviceId,
-        startTime: { lt: endTime },
-        endTime: { gt: startTime },
-      },
-    });
+    let conflict;
+    if (staffId) {
+      conflict = await prisma.booking.findFirst({
+        where: {
+          staffId,
+          startTime: { lt: endTime },
+          endTime: { gt: startTime },
+        },
+      });
+    } else {
+      conflict = await prisma.booking.findFirst({
+        where: {
+          serviceId,
+          startTime: { lt: endTime },
+          endTime: { gt: startTime },
+        },
+      });
+    }
 
     if (conflict) {
       throw new Error('Time slot already booked');
     }
 
+    const data: any = {
+      userId,
+      serviceId,
+      startTime,
+      endTime,
+    };
+
+    if (staffId) data.staffId = staffId;
+
     return prisma.booking.create({
-      data: {
-        userId,
-        serviceId,
-        startTime,
-        endTime,
-      },
+      data,
     });
   }
 

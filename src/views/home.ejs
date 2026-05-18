@@ -1,0 +1,30 @@
+<%- include('partials/header', { title: 'Welcome', user }) %>
+
+<div class="hero py-5 text-center text-white bg-primary rounded-4 shadow-sm">
+  <div class="container py-5">
+    <h1 class="display-5 fw-bold">Book services faster with GetMeBooked</h1>
+    <p class="lead mb-4">Browse local businesses, choose staff, and secure your booking with an easy workflow.</p>
+    <div class="d-flex justify-content-center gap-2">
+      <a href="/business" class="btn btn-light btn-lg">Explore businesses</a>
+      <% if (!user) { %><a href="/auth/register" class="btn btn-outline-light btn-lg">Create account</a><% } %>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5 gy-4">
+  <% businesses.forEach(business => { %>
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title"><%= business.name %></h5>
+          <p class="card-text text-muted mb-3"><%= business.city || 'Local business' %></p>
+          <div class="mt-auto">
+            <a class="btn btn-primary" href="/booking/new/<%= business.id %>">Book service</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('partials/footer') %>

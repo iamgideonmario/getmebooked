@@ -21,3 +21,10 @@ ALTER TABLE "Booking" ADD CONSTRAINT "Booking_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Booking" ADD CONSTRAINT "Booking_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Service"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- Add staffId column and foreign key
+ALTER TABLE "Booking" ADD COLUMN "staffId" TEXT;
+ALTER TABLE "Booking" ADD CONSTRAINT "Booking_staffId_fkey" FOREIGN KEY ("staffId") REFERENCES "Staff"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- Add paid flag to bookings
+ALTER TABLE "Booking" ADD COLUMN "paid" BOOLEAN NOT NULL DEFAULT false;

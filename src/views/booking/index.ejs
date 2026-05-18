@@ -1,44 +1,78 @@
-<div class="container mt-4">
-  <h2>Book a Service</h2>
+<%- include('../partials/header', { title: 'Book a Service', user }) %>
 
-  <form method="POST" action="/booking/create">
+<div class="booking-page">
+  <div class="card mx-auto mt-4" style="max-width: 720px;">
+    <div class="card-body">
+      <h2 class="card-title mb-4">Book a Service</h2>
 
-    <!-- ✅ Service dropdown -->
-    <select name="serviceId" class="form-control mb-3">
-      <% services.forEach(s => { %>
-        <option value="<%= s.id %>">
-          <%= s.name %> (<%= s.duration %> min)
-        </option>
-      <% }) %>
-    </select>
+      <form method="POST" action="/booking/create">
+        <div class="mb-3">
+          <label class="form-label">Service</label>
+          <select name="serviceId" id="serviceSelect" class="form-select">
+            <% services.forEach(s => { %>
+              <option value="<%= s.id %>"><%= s.name %> (<%= s.duration %> min)</option>
+            <% }) %>
+          </select>
+        </div>
 
-    <!-- ✅ Date picker -->
-    <input type="date" id="date" class="form-control mb-3" />
+        <div class="mb-3">
+          <label class="form-label">Preferred staff</label>
+          <select name="staffId" class="form-select">
+            <option value="">Any staff</option>
+            <% (staff || []).forEach(st => { %>
+              <option value="<%= st.id %>"><%= st.name %></option>
+            <% }) %>
+          </select>
+        </div>
 
-    <!-- ✅ Available slots -->
-    <select name="startTime" id="slots" class="form-control mb-3">
-      <option>Select a time</option>
-    </select>
+        <div class="mb-3">
+          <label class="form-label">Date</label>
+          <input type="date" id="date" name="date" class="form-control" required />
+        </div>
 
-    <button class="btn btn-success">Book</button>
+        <div class="mb-3">
+          <label class="form-label">Available time slots</label>
+          <select name="startTime" id="slots" class="form-select" required>
+            <option value="">Select a date to load options</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary w-100">Book and pay</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
-document.getElementById("date").addEventListener("change", async function () {
-  const date = this.value;
-  const serviceId = document.querySelector("select[name='serviceId']").value;
+const serviceSelect = document.getElementById('serviceSelect');
+const dateInput = document.getElementById('date');
+const slots = document.getElementById('slots');
 
-  const res = await fetch(`/booking/availability/${serviceId}`);
-  const data = await res.json();
+async function loadSlots() {
+  if (!dateInput.value || !serviceSelect.value) {
+    slots.innerHTML = '<option value="">Select a date to load options</option>';
+    return;
+  }
 
-  const slots = document.getElementById("slots");
-  slots.innerHTML = "";
+  const response = await fetch(`/booking/availability/${serviceSelect.value}?date=${dateInput.value}`);
+  const data = await response.json();
+
+  slots.innerHTML = '';
+  if (!data || data.length === 0) {
+    slots.innerHTML = '<option value="">No available slots</option>';
+    return;
+  }
 
   data.forEach(slot => {
-    const option = document.createElement("option");
+    const option = document.createElement('option');
     option.value = slot;
     option.text = new Date(slot).toLocaleString();
     slots.appendChild(option);
   });
-});
+}
+
+dateInput.addEventListener('change', loadSlots);
+serviceSelect.addEventListener('change', loadSlots);
 </script>
-  </form>
-</div>
+
+<%- include('../partials/footer') %>

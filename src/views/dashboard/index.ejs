@@ -1,6 +1,50 @@
-<h1>Dashboard</h1>
+<%- include('../partials/header', { title: 'Dashboard', user }) %>
 
-<p>Welcome <%= user.email %></p>
+<div class="dashboard-page">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3">Dashboard</h1>
+      <p class="text-muted mb-0">Welcome back, <strong><%= user.email %></strong>.</p>
+    </div>
+    <div>
+      <a class="btn btn-outline-secondary" href="/business">My businesses</a>
+      <a class="btn btn-primary" href="/auth/logout">Logout</a>
+    </div>
+  </div>
 
-/businessView Businesses</a>
-auth/logout">Logout</a>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="h5">Upcoming bookings</h2>
+      <% if (bookings.length === 0) { %>
+        <p class="mb-0 text-muted">No bookings yet. Choose a business and book a service.</p>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table table-hover mt-3">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Business</th>
+                <th>Staff</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% bookings.forEach(booking => { %>
+                <tr>
+                  <td><%= booking.service.name %></td>
+                  <td><%= booking.service.business.name %></td>
+                  <td><%= booking.staff?.name || 'Any' %></td>
+                  <td><%= new Date(booking.startTime).toLocaleString() %></td>
+                  <td><span class="badge bg-<%= booking.paid ? 'success' : 'warning' %>"><%= booking.paid ? 'Paid' : 'Pending' %></span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -15,24 +15,34 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Get('login')
-  loginPage(@Res() res: Response) {
-    return res.render('auth/login');
+  loginPage(@Req() req: Request, @Res() res: Response) {
+    return res.render('auth/login', {
+      user: (req as any).session?.user,
+      error: req.query.error,
+    });
   }
 
   @Get('register')
-  registerPage(@Res() res: Response) {
-    return res.render('auth/register');
+  registerPage(@Req() req: Request, @Res() res: Response) {
+    return res.render('auth/register', {
+      user: (req as any).session?.user,
+      error: req.query.error,
+    });
   }
 
   @Post('register')
   async register(
     @Body() body: { email: string; password: string },
     @Req() req: Request,
+    @Res() res: Response,
   ) {
-    const user = await this.authService.register(body.email, body.password);
-
-    (req as any).session.user = user;
-    return user;
+    try {
+      const user = await this.authService.register(body.email, body.password);
+      (req as any).session.user = user;
+      return res.redirect('/dashboard');
+    } catch (error) {
+      return res.redirect('/auth/register?error=' + encodeURIComponent('Registration failed'));
+    }
   }
 
   @Post('login')
@@ -44,7 +54,7 @@ export class AuthController {
     const user = await this.authService.validateUser(body.email, body.password);
 
     if (!user) {
-      return res.send('Invalid credentials');
+      return res.redirect('/auth/login?error=' + encodeURIComponent('Invalid credentials'));
     }
 
     (req as any).session.user = user;

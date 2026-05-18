@@ -1,22 +1,40 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from './auth/guards/auth.guard';
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { prisma } from './prisma/prisma.service';
 
 @Controller()
 export class AppController {
 
   @Get()
-  home() {
-    return "✅ GetMeBooked running";
+  async home(@Req() req: Request, @Res() res: Response) {
+    const businesses = await prisma.business.findMany({
+      include: { services: true },
+    });
+
+    return res.render('home', {
+      user: (req as any).session?.user,
+      businesses,
+    });
   }
 
   @UseGuards(AuthGuard)
   @Get('dashboard')
-  dashboard(@Req() req: Request) {
-    return {
-      message: "Dashboard",
-      user: (req as any).session.user,
-    };
+  async dashboard(@Req() req: Request, @Res() res: Response) {
+    const user = (req as any).session.user;
+    const bookings = await prisma.booking.findMany({
+      where: { userId: user.id },
+      include: {
+        service: { include: { business: true } },
+        staff: true,
+      },
+      orderBy: { startTime: 'asc' },
+    });
+
+    return res.render('dashboard/index', {
+      user,
+      bookings,
+    });
   }
 
 }

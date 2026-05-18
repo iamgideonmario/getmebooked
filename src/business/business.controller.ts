@@ -21,18 +21,20 @@ export class BusinessController {
   async create(
     @Body() body: { name: string },
     @Req() req: Request,
+    @Res() res: Response,
   ) {
     const user = (req as any).session.user;
-
-    return this.businessService.createBusiness(user.id, body.name);
+    await this.businessService.createBusiness(user.id, body.name);
+    return res.redirect('/business');
   }
 
   @Get()
-  async all(@Res() res: Response) {
+  async all(@Req() req: Request, @Res() res: Response) {
     const businesses = await this.businessService.getAll();
 
     return res.render('booking/business', {
       businesses,
+      user: (req as any).session?.user,
     });
-}
+  }
 }
